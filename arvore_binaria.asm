@@ -31,8 +31,6 @@
 	str_pre_ordem:	.asciiz "Percorrer arvore em pre-ordem	(2) :\n"
 	str_in_ordem:	.asciiz "Percorrer arvore em ordem	(3) :\n"
 	str_close:	.asciiz "Sair				(5) :\n"
-	str_esq:		.asciiz "Esquerda"
-	str_dir:	.asciiz "Direita"
 	str_invalid:	.asciiz "Opção inválida\n"
 	str_next:	.asciiz "\n"
 	str_space:	.asciiz	" "
