@@ -10,9 +10,9 @@
 #												#
 #		Pos-ordem									#
 #												#
-# Autor: Gabriel Ribeiro Evangelista NUSP: 9771334						#
+# Aluno: Gabriel Ribeiro Evangelista NUSP: 9771334						#
 #												#
-# Autor: Alysson Rogerio de Oliveira NUSP: 9771355						#
+# Aluno: Alysson Rogerio de Oliveira NUSP: 9771355						#
 #												#
 #################################################################################################
 
@@ -33,7 +33,11 @@
 	str_close:	.asciiz "Sair				(5) :\n"
 	str_invalid:	.asciiz "Opção inválida\n"
 	str_next:	.asciiz "\n"
-	str_space:	.asciiz	" "
+	str_space:	.asciiz	", "
+	str_p:		.asciiz "."
+	str_pre:	.asciiz	"Pre-ordem: "
+	str_pos:	.asciiz "Pos-ordem: "
+	str_ord:	.asciiz	"Em-ordem: "
 	
 .text
 
@@ -189,6 +193,10 @@ armazena:
 #################################################################################
 
 in_ordem:
+	la $a0, str_ord
+	li $v0, 4
+	syscall
+
 	# Se nao houver elementos retorna para menu
 	move $sp, $s1
 	lw $a0, 0($sp)
@@ -266,12 +274,16 @@ in_ordem:
 		bgt $t6, $zero, in_ordem_search_right
 		
 		# Retorna para o menu
-		j menu	
+		j end_search
 
 #################################################################################
 #################################################################################
 
 pre_ordem:
+	la $a0, str_pre
+	li $v0, 4
+	syscall
+	
 	# Se nao houver elementos retorna para menu
 	move $sp, $s1
 	lw $a0, 0($sp)
@@ -348,12 +360,16 @@ pre_ordem:
 		bgt $t6, $zero, in_pre_ordem_search_right
 		
 		# Retorna para o menu
-		j menu
+		j end_search
 		
 #################################################################################
 #################################################################################
 
 pos_ordem:
+	la $a0, str_pos
+	li $v0, 4
+	syscall
+	
 	# Se nao houver elementos retorna para menu
 	move $sp, $s1
 	lw $a0, 0($sp)
@@ -445,8 +461,18 @@ pos_ordem:
 			bgt $t6, $zero, in_pos_ordem_search_right
 			
 			# Retorna para o menu
-			j menu
+			j end_search
 			
+#################################################################################
+#################################################################################
+
+end_search:	
+	la $a0, str_next
+	li $v0, 4
+	syscall
+	
+	j menu
+
 #################################################################################
 #################################################################################
 
