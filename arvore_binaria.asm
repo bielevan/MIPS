@@ -12,7 +12,7 @@
 #												#
 # Autor: Gabriel Ribeiro Evangelista NUSP: 9771334						#
 #												#
-# Autor: Alysson Rogerio de Oliveira NUSP: 						#
+# Autor: Alysson Rogerio de Oliveira NUSP: 9771355						#
 #												#
 #################################################################################################
 
@@ -358,7 +358,7 @@ pos_ordem:
 	lw $a0, 0($sp)
 	beq $a0, $zero, menu
 	
-	# Registrador $t3 controla a posicao da arvore
+	# Registrador $t3 controla a posicao na arvore
 	li $t3, 0
 	
 	# Registrador $s4 é uma pilha para auxiliar a busca
@@ -367,12 +367,10 @@ pos_ordem:
 	# Controla as posições da pilha
 	li $t6, 0
 	
-	# Controle
+	# Controle de retorno
 	li $t7, 0
 							
 	in_pos_ordem_search_left:
-		# Busca o elemento mais a esquerda
-		
 		# Salva a posicao atual na pilha
 		addi $s4, $s4, -4
 		sw $t3, 0($s4)
@@ -397,13 +395,13 @@ pos_ordem:
 		# Ultimo elemento na pilha
 		lw $t3, 0($s4)
 		
-		# Salva a posicao de $t3
+		# Salva a posicao de $t3 atual
 		add $t2, $t3, $zero
 		
 		# Verifica se existe elemento a direita
 		mul $t3, $t3, 2
 		add $t3, $t3, 2
-		mul $s2, $t2, 4		# Posicao em bytes
+		mul $s2, $t3, 4		# Posicao em bytes
 		
 		# Obtem elemento
 		move $sp, $s1
@@ -431,13 +429,13 @@ pos_ordem:
 			mul $s2, $t3, 4			# Endereço em bytes
 			add $sp, $sp, $s2
 			
-			lw $a0, ($sp)			# Obtem valor de $t3
+			# Salva elemento visitado		
+			lw $t7, ($sp)			# Obtem valor de $t3
+			
+			la $a0, ($t7)
 			li $v0, 1
 			syscall
-	
-			# Salva elemento que esta sendo visitado
-			add $t7, $a0, $zero
-			
+				
 			la $a0, str_space
 			li $v0, 4
 			syscall	
