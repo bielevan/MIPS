@@ -118,15 +118,18 @@ insercao:
 	lw $a0, 0($sp)
 	beq $a0, $zero, raiz
 	
+	# Reinicia $t3
+	li $t3, 0
+	
 	# $t1 recebe o valor do usuário
 	move $t1, $v0			
 		
 	# Recebe o valor do nó atual
 	lw $t4, 0($sp)	
+	
 	slt $s2, $t1, $t4		# if (valor digitado < nó atual) $s2 = 1	    else $s2 = 0
 	beq $s2, 1, esquerda
-	beq $s2, 0, direita
-	b insercao
+	j direita
 	
 #################################################################################
 #################################################################################
@@ -139,43 +142,46 @@ raiz:
 
 esquerda:	
 	mul $t3, $t3, 2			#$t3 = 2 * $t3
-	addi $t3, $t3, 1		#$t3 = 2 * $t3 + 1
+	add $t3, $t3, 1			#$t3 = 2 * $t3 + 1
 	mul $s2, $t3, 4			#$s2 = (2n+1) * 4 (pula n inteiros)
-
-	move $sp, $s1			#retorna para o no raiz
+	
+	# Retorna para o no raiz
+	move $sp, $s1			
 	add $sp, $sp, $s2		#$sp pula para o filho da esquerda
-	lw $t4, ($sp)			#recebe o valor do nó atual
+	
+	# Obtem no atual
+	lw $t4, 0($sp)
 	beq $t4, 0, armazena
 	
 	slt $s2, $t1, $t4		#if (valor digitado < nó atual) $s2 = 1	    else $s2 = 0
 	beq $s2, 1, esquerda
-	beq $s2, 0, direita
+	j direita
 
 #################################################################################
 #################################################################################
 
 direita:
 	mul $t3, $t3, 2			#$t3 = 2 * $t2
-	addi $t3, $t3, 2		#$t3 = 2 * $t2 + 2
+	add $t3, $t3, 2			#$t3 = 2 * $t2 + 2
 	mul $s2, $t3, 4			#$s2 = (2n+2) * 4 (pula n int)
-
-	move $sp, $s1			#retorna para o no raiz
+	
+	# Retorna para o no raiz
+	move $sp, $s1
 	add $sp, $sp, $s2		#pula para a poscao do vetor que recebera o novo valor
 	lw $t4, ($sp)			#recebe o valor do nó atual
 	beq $t4, 0, armazena
 	
 	slt $s2, $t1, $t4		#if (valor digitado < nó atual) $s2 = 1	    else $s2 = 0
 	beq $s2, 1, esquerda
-	beq $s2, 0, direita
+	j direita
 
 #################################################################################
 #################################################################################
 
 armazena:
-	move $sp, $s1			#retorna para o no raiz
-	add $sp, $sp, $s2		#pula para a posicao do vetor que recebera o novo valor
+	# move $sp, $s1			#retorna para o no raiz
+	# add $sp, $sp, $s2		#pula para a posicao do vetor que recebera o novo valor
 	sw $t1, ($sp)			#salva o valor de $t1 no endereço de $s1
-	li $t3, 0			#zera o contador
 	j insercao
 
 #################################################################################
